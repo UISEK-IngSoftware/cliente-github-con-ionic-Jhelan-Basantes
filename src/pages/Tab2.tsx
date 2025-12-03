@@ -1,4 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonInput, IonTextarea } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab2.css';
 
@@ -7,16 +8,35 @@ const Tab2: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Formulario del Repositorio</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
+            <IonTitle size="large">Formulario del Repositorio</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 2 page" />
+
+       <div className="form-container">
+         <IonInput label="Nombre del repositorio" 
+         labelPlacement="floating" 
+         fill="outline" 
+         placeholder="android-proyect"
+         className='form-field'
+         ></IonInput>
+         
+         <IonTextarea 
+         label="Descripción del Repositorio" 
+         labelPlacement="floating"
+         fill="outline" 
+         placeholder="Este es un repositorio Android"
+         className='form-field'
+         rows={6}
+         ></IonTextarea>
+
+
+       </div>
       </IonContent>
     </IonPage>
   );
