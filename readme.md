@@ -6,6 +6,8 @@
 - **Nombre:** Jhelan Basantes
 - **Carrera:** Desarrollo de aplicaciones móviles
 
+- **Carrera:** Ingeniería Informática
+- **Fecha de inicio:** 3/12/2025
 
 ---
 

@@ -27,7 +27,7 @@ const Tab2: React.FC = () => {
 
   const saveRepository = () => {
     if(repoFormData.name.trim() === ''){
-      alert("El nombre del repositorio es obligatorio");
+      alert("El nombre del repositorio es obligatorio!");
       return;
     }
     createRepository(repoFormData)
