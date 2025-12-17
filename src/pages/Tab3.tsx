@@ -1,30 +1,48 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter } from '@ionic/react';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
 import './Tab3.css';
+import { UserInfo } from '../interfaces/UserInfo';
+import { useState } from 'react';
+import { getUserInfo } from '../services/GithubService';
+
 
 const Tab3: React.FC = () => {
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  const loadUserInfo = async () => {
+    const info =await getUserInfo();
+    setUserInfo(info);
+  };
+
+  useIonViewDidEnter(() => {
+    loadUserInfo();
+    console.log(userInfo);
+    
+  })
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Perfil de Usuario</IonTitle>
+          <IonTitle>Perfil de usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Perfil de Usuario</IonTitle>
+            <IonTitle size="large">Perfil de usuario</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonCard>
-      <img alt="Silhouette of mountains" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBlvwAFZOSFDTOCFf4CEzpkHEJ-3u2XUU13Q&s" />
+         <IonCard>
+      <img alt={userInfo?.name}
+      src ={userInfo?.avatar_url} />
       <IonCardHeader>
-        <IonCardTitle>Jhelan Basantes</IonCardTitle>
-        <IonCardSubtitle>Jhelan-Basantes</IonCardSubtitle>
+        <IonCardTitle>{userInfo?.name}</IonCardTitle>
+        <IonCardSubtitle>{userInfo?.login}</IonCardSubtitle>
       </IonCardHeader>
 
-      <IonCardContent>Esta es mi cuenta de github en donde subo mis proyectos, soy un estudiante de ingeniería informática de 5to semestre</IonCardContent>
+      <IonCardContent>{userInfo?.bio}</IonCardContent>
     </IonCard>
       </IonContent>
     </IonPage>

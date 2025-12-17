@@ -7,8 +7,7 @@
     padding: 16px;
     gap: 16px;
 }
-
-.form-field {
+.form-field{
     width: 100%;
     max-width: 640px;
 }
