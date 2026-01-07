@@ -1,18 +1,30 @@
 import axios from 'axios';
 import { RepositoryItem } from '../interfaces/RepositoryItem';
 import { UserInfo } from '../interfaces/UserInfo';
+import AuthServices from './AuthServices';
 
 const GITHUB_API_URL = import.meta.env.VITE_API_URL;
-const GITHUB_API_TOKEN = import.meta.env.VITE_GITHUB_API_TOKEN;
+
+const githubApi = axios.create({
+    baseURL: GITHUB_API_URL,
+});
+
+githubApi.interceptors.request.use((config) => {
+    const authHeader = AuthServices.getAuthHeaders();
+    if (authHeader) {
+        config.headers.Authorization = authHeader;
+    }
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
+
 
 export const fetchRepositories = async (): Promise<RepositoryItem[]> => {
     try {
-        const response = await axios.get(
-            `${GITHUB_API_URL}/user/repos`,
+        const response = await githubApi.get(`/user/repos`,
             {
-                headers: {
-                    Authorization: `Bearer ${GITHUB_API_TOKEN}`,
-                },
+  
                 params: {
                     per_page: 100,
                     sort: 'created',
@@ -40,16 +52,8 @@ export const fetchRepositories = async (): Promise<RepositoryItem[]> => {
 
 export const createRepository = async (repo: RepositoryItem): Promise<void> => {
     try {
-        const response = await axios.post(
-            `${GITHUB_API_URL}/user/repos`,
-            repo,
-            {
-                headers: {
-                    Authorization: `Bearer ${GITHUB_API_TOKEN}`,
-                }
-            }
-        );
-
+        const response = await githubApi.post(`/user/repos`, repo);
+   
         console.log('Repositorio ingresado:', response.data);
 
     } catch (error) {
@@ -59,10 +63,8 @@ export const createRepository = async (repo: RepositoryItem): Promise<void> => {
 
 export const getUserInfo = async () : Promise<UserInfo | null> => {
     try {
-        const response = await axios.get(`${GITHUB_API_URL}/user`, {
-            headers: {
-                Authorization: `Bearer ${GITHUB_API_TOKEN}`,
-            }
+        const response = await githubApi.get(`/user`, {
+
         });
         return response.data as UserInfo;
     }catch (error) {
@@ -71,7 +73,7 @@ export const getUserInfo = async () : Promise<UserInfo | null> => {
             login: 'undefined',
             name: 'Usuario no encontrado',
             bio: 'No se pudo obtener la informacion del usuario',
-            avatarUrl: 'https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png',
+            avatar_url: 'https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-High-Quality-Image.png',
     }
     return userNotFound;
     }
